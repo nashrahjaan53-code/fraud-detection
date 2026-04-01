@@ -73,8 +73,10 @@ with tab2:
     st.header("Real-time Risk Scoring")
     
     # Make predictions
-    X = df.drop(['transaction_id', 'is_fraud'], axis=1)
-    X['merchant_category'] = pd.Categorical(X['merchant_category']).codes
+    cols_to_drop = [col for col in ['transaction_id', 'is_fraud'] if col in df.columns]
+    X = df.drop(cols_to_drop, axis=1)
+    if 'merchant_category' in X.columns:
+        X['merchant_category'] = pd.Categorical(X['merchant_category']).codes
     
     fraud_probs = model.predict(X)
     df_pred = df.copy()

@@ -103,16 +103,12 @@ class FraudAnalyzer:
     
     def get_fraud_by_category(self):
         """Fraud rate by merchant category"""
-        return self.df.groupby('merchant_category')['is_fraud'].agg(['sum', 'count', 'mean']).rename({
-            'sum': 'fraud_count',
-            'count': 'total',
-            'mean': 'fraud_rate'
-        })
+        result = self.df.groupby('merchant_category')['is_fraud'].agg(['sum', 'count', 'mean'])
+        result.columns = ['fraud_count', 'total', 'fraud_rate']
+        return result
     
     def get_time_patterns(self):
         """Fraud by hour of day"""
-        return self.df.groupby('hour')['is_fraud'].agg(['sum', 'count', 'mean']).rename({
-            'sum': 'fraud_count',
-            'count': 'total',
-            'mean': 'fraud_rate'
-        })
+        result = self.df.groupby('hour')['is_fraud'].agg(['sum', 'count', 'mean'])
+        result.columns = ['fraud_count', 'total', 'fraud_rate']
+        return result
